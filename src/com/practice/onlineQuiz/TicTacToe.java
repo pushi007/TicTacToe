@@ -17,8 +17,6 @@ public class TicTacToe {
 			Scanner in = new Scanner(System.in);
 			String pos = in.nextLine();
 			board[Integer.parseInt(pos.split(" ")[0])][Integer.parseInt(pos.split(" ")[1])] = 1;
-			currentPlayer = 1;
-			
 			currentPlayer = 2;
 			int score = minimax(board, 2);
 			System.out.println("score: " + score + " " + "choice: " + choice);
@@ -51,7 +49,7 @@ public class TicTacToe {
 			}
 		}
 
-		if (turn == 2) {
+		if (currentPlayer == 2) {
 			int max = 0;
 			for (int i = 0; i < scores.size(); i++) {
 				if (scores.get(i) >= max) {
@@ -139,7 +137,7 @@ public class TicTacToe {
 	}
 
 	public static boolean checkGameOver(int board[][]) {
-		if (!winStrategy(board)) {
+		if (!winStrategy(board, 1) || !winStrategy(board, 2)) {
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3; j++) {
 					if (board[i][j] == 0)
