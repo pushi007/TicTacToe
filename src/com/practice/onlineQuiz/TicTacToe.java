@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class TicTacToe {
 	private static int board[][] = new int[3][3];
 
-	private static String choice = null;
+	public static String choice = null;
 	private static int currentPlayer = 0;
 
 	public static void main(String s[]) {
@@ -21,8 +21,17 @@ public class TicTacToe {
 			int score = minimax(board, 2);
 			System.out.println("score: " + score + " " + "choice: " + choice);
 			board[Integer.parseInt(choice.split(" ")[0])][Integer.parseInt(choice.split(" ")[1])] = 2;
-			if (checkGameOver(board))
+			if (checkGameOver(board)) {
+				int scoreFinal = calculateScore(board, 0);
+				if (scoreFinal == 10) {
+					System.out.println("Computer wins!!");
+				} else if (scoreFinal == -10)
+					System.out.println("You win!!");
+				else {
+					System.out.println("Match is tie!!");
+				}
 				break;
+			}
 		}
 	}
 
@@ -49,8 +58,8 @@ public class TicTacToe {
 			}
 		}
 
-		if (currentPlayer == 2) {
-			int max = 0;
+		if (turn == 2) {
+			int max = -30;
 			for (int i = 0; i < scores.size(); i++) {
 				if (scores.get(i) >= max) {
 					max = scores.get(i);
@@ -73,9 +82,9 @@ public class TicTacToe {
 	}
 
 	public static int calculateScore(int board[][], int turn) {
-		if (turn == 1 && winStrategy(board, turn))
+		if (winStrategy(board, 1))
 			return -10;
-		else if (turn == 2 && winStrategy(board, turn))
+		else if (winStrategy(board, 2))
 			return 10;
 		else
 			return 0;
@@ -114,6 +123,7 @@ public class TicTacToe {
 				}
 			}
 			if (!diagnoalwin) {
+				diagnoalwin = true;
 				for (int i = 0; i < 3; i++) {
 					if (board[i][2 - i] != turn) {
 						diagnoalwin = false;
@@ -137,7 +147,7 @@ public class TicTacToe {
 	}
 
 	public static boolean checkGameOver(int board[][]) {
-		if (!winStrategy(board, 1) || !winStrategy(board, 2)) {
+		if (!winStrategy(board, 1) && !winStrategy(board, 2)) {
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3; j++) {
 					if (board[i][j] == 0)
